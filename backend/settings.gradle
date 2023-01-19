@@ -2,3 +2,5 @@ rootProject.name = 'backend'
 
 include 'discovery-service'
 include 'gateway-service'
+include 'content-command'
+include 'content-query'
