@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: content-command-service
+  profiles:
+    active: local
 
 eureka:
   instance:
