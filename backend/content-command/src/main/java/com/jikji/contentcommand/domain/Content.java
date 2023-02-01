@@ -1,9 +1,11 @@
 package com.jikji.contentcommand.domain;
 
 import com.jikji.contentcommand.domain.converter.ImageConverter;
+import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -25,7 +27,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "contents")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Builder @AllArgsConstructor
+@Builder
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Content {
     @Id
@@ -43,9 +46,9 @@ public class Content {
     private List<ImageUrl> imageUrl;
     private int likes;
 
-    private boolean visibleLikes;
+    private Boolean visibleLikes;
 
-    private boolean visibleComments;
+    private Boolean visibleComments;
 
     @Column(name = "created_at")
     private String createdAt;
@@ -63,5 +66,61 @@ public class Content {
     @PreUpdate
     public void preUpdate() {
         modifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
+    public void update(final ContentUpdateRequest content) {
+        updateText(content.getText());
+        updateImageUrl(content.getImageUrl());
+        updateVisibleComments(content.getVisibleComments());
+        updateVisibleLikes(content.getVisibleLikes());
+    }
+
+    private void updateText(final String text) {
+        if (text != null) {
+            this.text = text;
+        }
+    }
+
+    private void updateImageUrl(final List<ImageUrl> imageUrl) {
+        if (imageUrl.size() > 0) {
+            this.imageUrl = imageUrl;
+        }
+    }
+
+    private void updateVisibleLikes(final Boolean visibleLikes) {
+        this.visibleLikes = visibleLikes;
+    }
+
+    private void updateVisibleComments(final Boolean visibleComments) {
+        this.visibleComments = visibleComments;
+    }
+
+    public void changeVisibleLikes(final Boolean visibleLikes) {
+        if (visibleLikes != null) {
+            this.visibleLikes = !this.visibleLikes;
+        }
+    }
+
+    public void changeVisibleComments(final Boolean visibleComments) {
+        if (visibleComments != null) {
+            this.visibleComments = !this.visibleComments;
+        }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Content)) {
+            return false;
+        }
+        final Content content = (Content) o;
+        return Objects.equals(id, content.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
