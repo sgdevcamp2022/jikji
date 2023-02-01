@@ -1,11 +1,13 @@
 package com.jikji.contentcommand.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.jikji.contentcommand.domain.Content;
 import com.jikji.contentcommand.domain.ImageUrl;
 import com.jikji.contentcommand.dto.request.ContentCreateRequest;
 import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
+import com.jikji.contentcommand.repository.ContentCommandRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,8 @@ class ContentCommandServiceTest {
 
     @Autowired
     private ContentCommandService contentCommandService;
+    @Autowired
+    private ContentCommandRepository contentCommandRepository;
 
     @DisplayName("새로운 게시글을 생성한다")
     @Test
@@ -69,5 +73,24 @@ class ContentCommandServiceTest {
         assertThat(content.getImageUrl()).isEqualTo(request.getImageUrl());
         assertThat(content.getVisibleComments()).isEqualTo(request.getVisibleComments());
         assertThat(content.getVisibleLikes()).isEqualTo(request.getVisibleLikes());
+    }
+
+    @DisplayName("게시글을 삭제한다")
+    @Test
+    void 게시글을_삭제한다() {
+        // given
+        Long contentId = 1L;
+        Content content = Content.builder()
+                .id(contentId)
+                .likes(0)
+                .text("게시글 본문")
+                .imageUrl(List.of(new ImageUrl("http://test.jikji/image", 1, 1L)))
+                .userId(1L)
+                .visibleComments(false)
+                .visibleLikes(false)
+                .build();
+        contentCommandRepository.save(content);
+        // when, then
+        assertDoesNotThrow(() -> contentCommandService.delete(contentId));
     }
 }
