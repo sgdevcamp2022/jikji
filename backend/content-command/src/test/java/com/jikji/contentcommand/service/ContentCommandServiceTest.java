@@ -93,4 +93,50 @@ class ContentCommandServiceTest {
         // when, then
         assertDoesNotThrow(() -> contentCommandService.delete(contentId));
     }
+
+    @DisplayName("댓글 감추기 요청시 댓글을 비활성화 한다")
+    @Test
+    void 댓글을_비활성화한다() {
+        // given
+        Long contentId = 1L;
+        boolean visibleComments = true;
+        Content content = Content.builder()
+                .id(contentId)
+                .likes(0)
+                .text("게시글 본문")
+                .imageUrl(List.of(new ImageUrl("http://test.jikji/image", 1, 1L)))
+                .userId(1L)
+                .visibleComments(visibleComments)
+                .build();
+        contentCommandRepository.save(content);
+
+        // when
+        boolean result = contentCommandService.visibilityComments(contentId);
+
+        // then
+        assertThat(result).isEqualTo(!visibleComments);
+    }
+
+    @DisplayName("좋아요 숫자 감추기 요청시 좋아요 수를 가린다")
+    @Test
+    void 좋아요수를_가린다() {
+        // given
+        Long contentId = 1L;
+        boolean visibleLikes = true;
+        Content content = Content.builder()
+                .id(contentId)
+                .likes(0)
+                .text("게시글 본문")
+                .imageUrl(List.of(new ImageUrl("http://test.jikji/image", 1, 1L)))
+                .userId(1L)
+                .visibleLikes(visibleLikes)
+                .build();
+        contentCommandRepository.save(content);
+
+        // when
+        boolean result = contentCommandService.visibilityLikes(contentId);
+
+        // then
+        assertThat(result).isEqualTo(!visibleLikes);
+    }
 }
