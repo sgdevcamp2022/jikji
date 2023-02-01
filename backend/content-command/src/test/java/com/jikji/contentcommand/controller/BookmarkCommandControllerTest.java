@@ -1,0 +1,95 @@
+package com.jikji.contentcommand.controller;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.jikji.contentcommand.domain.Bookmark;
+import com.jikji.contentcommand.domain.Content;
+import com.jikji.contentcommand.domain.ImageUrl;
+import com.jikji.contentcommand.repository.BookmarkCommandRepository;
+import com.jikji.contentcommand.repository.ContentCommandRepository;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@ExtendWith(SpringExtension.class)
+class BookmarkCommandControllerTest {
+
+    @LocalServerPort
+    int port;
+
+    @Autowired
+    private ContentCommandRepository contentRepository;
+
+
+    private final static long userId = 1;
+    private final static long contentId = 1;
+    @Autowired
+    private BookmarkCommandRepository bookmarkCommandRepository;
+
+    @BeforeEach
+    void setUp() {
+        Content content = Content.builder()
+                .id(contentId)
+                .likes(0)
+                .text("변경전 텍스트")
+                .imageUrl(List.of(new ImageUrl("http://test.jikji/before-image", 1, 1L)))
+                .userId(userId)
+                .visibleComments(false)
+                .visibleLikes(true)
+                .build();
+
+        contentRepository.save(content);
+    }
+
+    @DisplayName("북마크를 추가한다")
+    @Test
+    void saveBookmark() {
+        // when
+        String api = "http://localhost:" + port + "/bookmarks/" + userId + "/save/" + contentId;
+        ExtractableResponse<Response> response = post(api);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @DisplayName("북마크를 삭제한다")
+    @Test
+    void unsaveBookmark() {
+        // given
+        Bookmark bookmark = Bookmark.builder()
+                .contentId(contentId)
+                .userId(userId)
+                .build();
+        bookmarkCommandRepository.save(bookmark);
+
+        // when
+        String api = "http://localhost:" + port + "/bookmarks/" + userId + "/unsave/" + contentId;
+        ExtractableResponse<Response> response = post(api);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    static ExtractableResponse<Response> post(final String api) {
+        return RestAssured
+                .given().log().all()
+                .when().post(api)
+                .then().log().all()
+                .extract();
+    }
+}
