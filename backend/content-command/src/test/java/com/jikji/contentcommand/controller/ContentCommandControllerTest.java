@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.jikji.contentcommand.domain.ImageUrl;
 import com.jikji.contentcommand.dto.request.ContentCreateRequest;
+import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -49,6 +50,37 @@ class ContentCommandControllerTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
+    @Test
+    @DisplayName("content를 수정한다")
+    void update() {
+        // given
+        final Long contentId = 1L;
+        final Long userId = 1L;
+
+        ContentCreateRequest createRequest = ContentCreateRequest.builder()
+                .userId(userId)
+                .visibleComments(true)
+                .visibleLikes(true)
+                .imageUrl(List.of(new ImageUrl("https://before.url", 1, userId)))
+                .text("description")
+                .build();
+
+        ContentUpdateRequest updateRequest = ContentUpdateRequest.builder()
+                .text("바뀐 내용 적용하기")
+                .visibleLikes(false)
+                .visibleComments(false)
+                .imageUrl(List.of(new ImageUrl("https://after.url", 1, userId)))
+                .userId(userId)
+                .build();
+        // when
+        final String api = "http://localhost:" + port + "/contents";
+        saveContent(api, createRequest);
+        ExtractableResponse<Response> response = updateContent(api + "/" + contentId, updateRequest);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
     static ExtractableResponse<Response> saveContent(final String api, final ContentCreateRequest request) {
         return RestAssured
                 .given().log().all()
@@ -59,4 +91,16 @@ class ContentCommandControllerTest {
                 .then().log().all()
                 .extract();
     }
+
+    static ExtractableResponse<Response> updateContent(final String api, final ContentUpdateRequest request) {
+        return RestAssured
+                .given().log().all()
+                .accept("application/json")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when().patch(api)
+                .then().log().all()
+                .extract();
+    }
+
 }
