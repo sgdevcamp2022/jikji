@@ -32,7 +32,7 @@ public class LikeCommandServiceImpl implements LikeCommandService {
 
     @Override
     public int likeContent(Long userId, Long contentId) {
-        ValidCheckUtil.checkDuplicated(userId, contentId, likeCommandRepository);
+        ValidCheckUtil.checkDuplicatedLike(userId, contentId, likeCommandRepository);
 
         Content content = contentCommandRepository.findById(contentId)
                 .orElseThrow(ContentNotFoundException::new);
