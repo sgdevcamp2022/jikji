@@ -9,4 +9,5 @@ public interface ContentCommandService {
 
     void update(final Long contentId, final ContentUpdateRequest request);
 
+    void delete(final Long contentId);
 }

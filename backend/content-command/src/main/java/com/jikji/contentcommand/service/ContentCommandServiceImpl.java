@@ -30,4 +30,9 @@ public class ContentCommandServiceImpl implements ContentCommandService {
                 .orElseThrow(ContentNotFoundException::new);
         content.update(request);
     }
+
+    @Override
+    public void delete(Long contentId) {
+        contentCommandRepository.deleteById(contentId);
+    }
 }
