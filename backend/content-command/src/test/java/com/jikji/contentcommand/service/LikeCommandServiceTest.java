@@ -82,7 +82,7 @@ class LikeCommandServiceTest {
 
         // when, then
         assertThrows(LikeDuplicatedException.class,
-                () -> ValidCheckUtil.checkDuplicated(userId, contentId, likeCommandRepository));
+                () -> ValidCheckUtil.checkDuplicatedLike(userId, contentId, likeCommandRepository));
 
     }
 
