@@ -103,6 +103,14 @@ public class Content {
         this.visibleComments = !this.visibleComments;
     }
 
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
