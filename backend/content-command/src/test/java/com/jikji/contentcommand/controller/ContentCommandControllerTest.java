@@ -105,12 +105,64 @@ class ContentCommandControllerTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    @DisplayName("좋아요 수를 가린다")
+    void hide_likes() {
+        // given
+        final long contentId = 1;
+        ContentCreateRequest createRequest = ContentCreateRequest.builder()
+                .userId(1L)
+                .visibleComments(true)
+                .visibleLikes(true)
+                .imageUrl(List.of(new ImageUrl("https://before.url", 1, 1L)))
+                .text("description")
+                .build();
+        final String api = "http://localhost:" + port + "/contents";
+        saveContent(api, createRequest);
+
+        // when
+        ExtractableResponse<Response> response = saveVisibility(api + "/visibility/likes/" + contentId);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("댓글을 숨긴다")
+    void hide_comments() {
+        // given
+        final long contentId = 1;
+        ContentCreateRequest createRequest = ContentCreateRequest.builder()
+                .userId(1L)
+                .visibleComments(true)
+                .visibleLikes(true)
+                .imageUrl(List.of(new ImageUrl("https://before.url", 1, 1L)))
+                .text("description")
+                .build();
+        final String api = "http://localhost:" + port + "/contents";
+        saveContent(api, createRequest);
+
+        // when
+        ExtractableResponse<Response> response = saveVisibility(api + "/visibility/comments/" + contentId);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
     static ExtractableResponse<Response> saveContent(final String api, final ContentCreateRequest request) {
         return RestAssured
                 .given().log().all()
                 .accept("application/json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
+                .when().post(api)
+                .then().log().all()
+                .extract();
+    }
+
+    static ExtractableResponse<Response> saveVisibility(final String api) {
+        return RestAssured
+                .given().log().all()
                 .when().post(api)
                 .then().log().all()
                 .extract();
