@@ -81,6 +81,30 @@ class ContentCommandControllerTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
+    @Test
+    @DisplayName("content를 삭제한다")
+    void delete() {
+        // given
+        final Long contentId = 1L;
+        final Long userId = 1L;
+
+        ContentCreateRequest createRequest = ContentCreateRequest.builder()
+                .userId(userId)
+                .visibleComments(true)
+                .visibleLikes(true)
+                .imageUrl(List.of(new ImageUrl("https://before.url", 1, userId)))
+                .text("description")
+                .build();
+
+        // when
+        final String api = "http://localhost:" + port + "/contents";
+        saveContent(api, createRequest);
+        ExtractableResponse<Response> response = deleteContent(api + "/" + contentId);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
     static ExtractableResponse<Response> saveContent(final String api, final ContentCreateRequest request) {
         return RestAssured
                 .given().log().all()
@@ -103,4 +127,11 @@ class ContentCommandControllerTest {
                 .extract();
     }
 
+    static ExtractableResponse<Response> deleteContent(final String api) {
+        return RestAssured
+                .given().log().all()
+                .when().delete(api)
+                .then().log().all()
+                .extract();
+    }
 }
