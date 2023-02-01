@@ -87,24 +87,20 @@ public class Content {
         }
     }
 
-    private void updateVisibleLikes(final Boolean visibleLikes) {
+    public void updateVisibleLikes(final Boolean visibleLikes) {
         this.visibleLikes = visibleLikes;
     }
 
-    private void updateVisibleComments(final Boolean visibleComments) {
+    public void updateVisibleComments(final Boolean visibleComments) {
         this.visibleComments = visibleComments;
     }
 
-    public void changeVisibleLikes(final Boolean visibleLikes) {
-        if (visibleLikes != null) {
-            this.visibleLikes = !this.visibleLikes;
-        }
+    public void changeVisibleLikes() {
+        this.visibleLikes = !this.visibleLikes;
     }
 
-    public void changeVisibleComments(final Boolean visibleComments) {
-        if (visibleComments != null) {
-            this.visibleComments = !this.visibleComments;
-        }
+    public void changeVisibleComments() {
+        this.visibleComments = !this.visibleComments;
     }
 
     @Override

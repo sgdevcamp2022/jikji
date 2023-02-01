@@ -2,6 +2,7 @@ package com.jikji.contentcommand.controller;
 
 import com.jikji.contentcommand.dto.request.ContentCreateRequest;
 import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
+import com.jikji.contentcommand.exception.ContentNotFoundException;
 import com.jikji.contentcommand.service.ContentCommandService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,25 @@ public class ContentCommandController {
     public ResponseEntity<?> deleteContent(@PathVariable Long contentId) {
         contentCommandService.delete(contentId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/visibility/likes/{contentId}")
+    public ResponseEntity<?> visibilityLikes(@PathVariable Long contentId) {
+        try {
+            boolean result = contentCommandService.visibilityLikes(contentId);
+            return ResponseEntity.ok(result);
+        } catch (ContentNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/visibility/comments/{contentId}")
+    public ResponseEntity<?> visibilityComments(@PathVariable Long contentId) {
+        try {
+            boolean result = contentCommandService.visibilityComments(contentId);
+            return ResponseEntity.ok(result);
+        } catch (ContentNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

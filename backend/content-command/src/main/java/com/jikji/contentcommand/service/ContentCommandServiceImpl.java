@@ -35,4 +35,25 @@ public class ContentCommandServiceImpl implements ContentCommandService {
     public void delete(Long contentId) {
         contentCommandRepository.deleteById(contentId);
     }
+
+    public boolean visibilityLikes(Long contentId) {
+        Content content = getContent(contentId);
+        content.changeVisibleLikes();
+        Content savedContent = contentCommandRepository.save(content);
+
+        return savedContent.getVisibleLikes();
+    }
+
+    public boolean visibilityComments(Long contentId) {
+        Content content = getContent(contentId);
+        content.changeVisibleComments();
+        Content savedContent = contentCommandRepository.save(content);
+
+        return savedContent.getVisibleComments();
+    }
+
+    private Content getContent(Long contentId) {
+        return contentCommandRepository.findById(contentId)
+                .orElseThrow(ContentNotFoundException::new);
+    }
 }
