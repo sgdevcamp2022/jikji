@@ -30,7 +30,7 @@ public class LikeCommandController {
     public ResponseEntity<?> unlikeContent(@PathVariable Long userId, @PathVariable Long contentId) {
         try {
             int count = likeCommandService.unlikeContent(userId, contentId);
-            return new ResponseEntity<>(count, HttpStatus.OK);
+            return new ResponseEntity<>(count, HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
