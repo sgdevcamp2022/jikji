@@ -45,12 +45,4 @@ public class Content {
             this.imageUrl = contentDto.getImageUrl();
         }
     }
-
-    public void increaseLikes() {
-        this.likes++;
-    }
-
-    public void decreaseLikes() {
-        this.likes--;
-    }
 }
