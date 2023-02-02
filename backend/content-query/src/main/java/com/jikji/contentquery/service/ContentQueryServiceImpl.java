@@ -2,6 +2,7 @@ package com.jikji.contentquery.service;
 
 
 import com.jikji.contentquery.domain.Content;
+import com.jikji.contentquery.exception.ContentNotFoundException;
 import com.jikji.contentquery.repository.ContentQueryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,8 @@ public class ContentQueryServiceImpl implements ContentQueryService {
     private final ContentQueryRepository contentQueryRepository;
 
     public Content findByPostId(Long contentId) {
-        return contentQueryRepository.findByContentId(contentId).orElseThrow(
-                () -> new RuntimeException("해당 게시글이 존재하지 않습니다.")
-        );
+        return contentQueryRepository.findByContentId(contentId)
+                .orElseThrow(ContentNotFoundException::new);
     }
 
     public List<Content> findByUserId(Long userId) {

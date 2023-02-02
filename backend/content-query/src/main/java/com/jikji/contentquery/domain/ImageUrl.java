@@ -1,18 +1,19 @@
 package com.jikji.contentquery.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ImageUrl {
 
     private String url;
 
     private int order;
-
-    private int height;
-
-    private int width;
 
     @JsonProperty(value = "user_id")
     private Long userId;

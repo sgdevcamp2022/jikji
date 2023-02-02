@@ -1,7 +1,11 @@
 package com.jikji.contentquery.domain;
 
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +14,8 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Document(collection = "contents")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor @Builder
 public class Content {
 
     @Id
