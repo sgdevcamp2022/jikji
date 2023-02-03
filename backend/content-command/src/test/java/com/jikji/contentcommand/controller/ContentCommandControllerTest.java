@@ -1,7 +1,6 @@
 package com.jikji.contentcommand.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.jikji.contentcommand.domain.ImageUrl;
 import com.jikji.contentcommand.dto.request.ContentCreateRequest;
@@ -9,6 +8,8 @@ import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,8 @@ class ContentCommandControllerTest {
                 .visibleComments(true)
                 .visibleLikes(true)
                 .imageUrl(imageUrl)
-                .text("description")
+                .text("변경전 텍스트 #aaa #bb #ccc #dde")
+                .hashtags(Arrays.asList(1L, 2L, 3L, 4L))
                 .build();
 
         // when
@@ -54,7 +56,7 @@ class ContentCommandControllerTest {
     @DisplayName("content를 수정한다")
     void update() {
         // given
-        final Long contentId = 1L;
+        final long contentId = 1L;
         final Long userId = 1L;
 
         ContentCreateRequest createRequest = ContentCreateRequest.builder()
@@ -62,11 +64,13 @@ class ContentCommandControllerTest {
                 .visibleComments(true)
                 .visibleLikes(true)
                 .imageUrl(List.of(new ImageUrl("https://before.url", 1, userId)))
-                .text("description")
+                .text("변경전 텍스트 #aaa #bb #ccc #dde")
+                .hashtags(Arrays.asList(1L, 2L, 3L, 4L))
                 .build();
 
         ContentUpdateRequest updateRequest = ContentUpdateRequest.builder()
-                .text("바뀐 내용 적용하기")
+                .text("변경된 텍스트 #aaa")
+                .hashtags(List.of(1L))
                 .visibleLikes(false)
                 .visibleComments(false)
                 .imageUrl(List.of(new ImageUrl("https://after.url", 1, userId)))
@@ -85,7 +89,7 @@ class ContentCommandControllerTest {
     @DisplayName("content를 삭제한다")
     void delete() {
         // given
-        final Long contentId = 1L;
+        final long contentId = 1L;
         final Long userId = 1L;
 
         ContentCreateRequest createRequest = ContentCreateRequest.builder()
@@ -94,6 +98,7 @@ class ContentCommandControllerTest {
                 .visibleLikes(true)
                 .imageUrl(List.of(new ImageUrl("https://before.url", 1, userId)))
                 .text("description")
+                .hashtags(new ArrayList<>())
                 .build();
 
         // when
@@ -116,6 +121,7 @@ class ContentCommandControllerTest {
                 .visibleLikes(true)
                 .imageUrl(List.of(new ImageUrl("https://before.url", 1, 1L)))
                 .text("description")
+                .hashtags(new ArrayList<>())
                 .build();
         final String api = "http://localhost:" + port + "/contents";
         saveContent(api, createRequest);
@@ -138,6 +144,7 @@ class ContentCommandControllerTest {
                 .visibleLikes(true)
                 .imageUrl(List.of(new ImageUrl("https://before.url", 1, 1L)))
                 .text("description")
+                .hashtags(new ArrayList<>())
                 .build();
         final String api = "http://localhost:" + port + "/contents";
         saveContent(api, createRequest);

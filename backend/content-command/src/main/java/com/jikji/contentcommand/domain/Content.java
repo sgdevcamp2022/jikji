@@ -1,5 +1,6 @@
 package com.jikji.contentcommand.domain;
 
+import com.jikji.contentcommand.domain.converter.HashtagConverter;
 import com.jikji.contentcommand.domain.converter.ImageConverter;
 import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
 import java.time.LocalDateTime;
@@ -44,6 +45,10 @@ public class Content {
     @Convert(converter = ImageConverter.class)
     @Column(name = "image_url")
     private List<ImageUrl> imageUrl;
+
+    @Convert(converter = HashtagConverter.class)
+    private List<Long> hashtags;
+
     private int likes;
 
     private Boolean visibleLikes;
@@ -73,6 +78,11 @@ public class Content {
         updateImageUrl(content.getImageUrl());
         updateVisibleComments(content.getVisibleComments());
         updateVisibleLikes(content.getVisibleLikes());
+        updateHashtag(content.getHashtags());
+    }
+
+    private void updateHashtag(final List<Long> hashtags) {
+        this.hashtags = hashtags;
     }
 
     private void updateText(final String text) {

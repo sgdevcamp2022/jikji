@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: content-command-service
+    name: content-command
   profiles:
     active: local
 
