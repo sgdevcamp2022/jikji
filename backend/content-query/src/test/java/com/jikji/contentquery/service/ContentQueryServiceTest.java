@@ -38,9 +38,10 @@ class ContentQueryServiceTest {
         Content content = Content.builder()
                 .likes(1234)
                 .contentId(1L)
-                .text("텍스트 본문 내용")
+                .text("텍스트 본문 내용 #aaa #aab")
                 .imageUrl(List.of(new ImageUrl("http://test.jikji/before-image", 1, 1L)))
                 .userId(1L)
+                .hashtags(List.of(1L, 2L))
                 .build();
 
         contentRepository.save(content);
@@ -53,7 +54,7 @@ class ContentQueryServiceTest {
         final Long contentId = 1L;
 
         // when, then
-        assertDoesNotThrow(() -> contentService.findByPostId(contentId));
+        assertDoesNotThrow(() -> contentService.findByContentId(contentId));
     }
 
     @DisplayName("사용자의 id로 작성한 게시글을 모두 볼 수 있다")
