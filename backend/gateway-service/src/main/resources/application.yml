@@ -35,3 +35,11 @@ spring:
               - PATCH
               - DELETE
               - OPTIONS
+      routes:
+        - id: content-service
+          uri: lb://CONTENT-SERVICE
+          predicates:
+            - Path=/content-service/**
+            - Method=POST,PATCH,DELETE,OPTIONS
+          filters:
+            - RewritePath=/content-service/(?<segment>.*), /$\{segment}

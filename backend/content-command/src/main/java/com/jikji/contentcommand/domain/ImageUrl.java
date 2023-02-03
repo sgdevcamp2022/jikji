@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ImageUrl {
 
+    private static final int MAX_IMAGE_URL_LENGTH = 20480;
+
     private String url;
 
     private int order;
