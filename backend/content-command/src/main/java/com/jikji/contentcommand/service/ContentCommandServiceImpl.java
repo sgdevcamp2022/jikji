@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jikji.contentcommand.domain.Content;
 import com.jikji.contentcommand.dto.message.ContentKafkaMessage;
+import com.jikji.contentcommand.dto.message.HashtagKafkaMessage;
 import com.jikji.contentcommand.dto.request.ContentCreateRequest;
 import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
 import com.jikji.contentcommand.exception.ContentNotFoundException;
 import com.jikji.contentcommand.repository.ContentCommandRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -34,11 +36,13 @@ public class ContentCommandServiceImpl implements ContentCommandService {
     }
 
     @Override
-    public void update(Long contentId, ContentUpdateRequest request) {
+    public void update(final Long contentId, final ContentUpdateRequest request) {
         final Content content = contentCommandRepository.findById(contentId)
                 .orElseThrow(ContentNotFoundException::new);
         content.update(request);
+        contentCommandRepository.save(content);
         sendMessage(content, KafkaTopic.UPDATE_CONTENT);
+        sendMessage(content.getHashtags(), contentId);
     }
 
     @Override
@@ -75,6 +79,19 @@ public class ContentCommandServiceImpl implements ContentCommandService {
             ContentKafkaMessage message = new ContentKafkaMessage(content);
             data = writer.writeValueAsString(message);
             kafkaTemplate.send(topic, data);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+        }
+        log.info("content kafka send - " + data);
+    }
+
+    private void sendMessage(List<Long> hashtags, Long contentId) {
+        ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String data = null;
+        try {
+            HashtagKafkaMessage message = new HashtagKafkaMessage(hashtags, contentId);
+            data = writer.writeValueAsString(message);
+            kafkaTemplate.send(KafkaTopic.UPDATE_HASHTAG, data);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
         }

@@ -33,6 +33,12 @@ public class Content {
 
     private List<ImageUrl> imageUrl;
 
+    private List<Long> hashtags;
+
+    private Boolean visibleLikes;
+
+    private Boolean visibleComments;
+
     private String createdAt;
 
     private String modifiedAt;
@@ -44,5 +50,17 @@ public class Content {
         if (contentDto.getImageUrl() != null) {
             this.imageUrl = contentDto.getImageUrl();
         }
+    }
+
+    public void updateHashtags(List<Long> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public void updateVisibilityLikes() {
+        this.visibleLikes = !this.visibleLikes;
+    }
+
+    public void updateVisibilityComments() {
+        this.visibleComments = !this.visibleComments;
     }
 }

@@ -24,6 +24,8 @@ public class ContentUpdateRequest {
 
     private Boolean visibleComments;
 
+    private List<Long> hashtags;
+
     public Content toEntity() {
         return Content.builder()
                 .userId(userId)
@@ -31,6 +33,7 @@ public class ContentUpdateRequest {
                 .imageUrl(imageUrl)
                 .visibleLikes(visibleLikes)
                 .visibleComments(visibleComments)
+                .hashtags(hashtags)
                 .build();
     }
 }

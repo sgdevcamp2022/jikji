@@ -12,9 +12,14 @@ import lombok.NoArgsConstructor;
 public class ContentKafkaMessage {
 
     private Long contentId;
+
     private Long userId;
+
     private String text;
+
     private List<ImageUrl> imageUrl;
+
+    private List<Long> hashtags;
 
     private int likes;
 
@@ -30,6 +35,7 @@ public class ContentKafkaMessage {
         this.contentId = content.getId();
         this.userId = content.getUserId();
         this.text = content.getText();
+        this.hashtags = content.getHashtags();
         this.imageUrl = content.getImageUrl();
         this.createdAt = content.getCreatedAt();
         this.modifiedAt = content.getModifiedAt();
