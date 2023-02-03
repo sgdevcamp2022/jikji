@@ -16,7 +16,7 @@ public class ContentQueryServiceImpl implements ContentQueryService {
 
     private final ContentQueryRepository contentQueryRepository;
 
-    public Content findByPostId(Long contentId) {
+    public Content findByContentId(Long contentId) {
         return contentQueryRepository.findByContentId(contentId)
                 .orElseThrow(ContentNotFoundException::new);
     }

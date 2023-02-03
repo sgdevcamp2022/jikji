@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ContentQueryService {
 
-    Content findByPostId(Long contentId);
+    Content findByContentId(Long contentId);
 
     List<Content> findByUserId(Long userId);
 }
