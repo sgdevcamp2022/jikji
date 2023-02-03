@@ -17,3 +17,13 @@ spring:
   h2:
     console:
       enabled: true
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:9092
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
