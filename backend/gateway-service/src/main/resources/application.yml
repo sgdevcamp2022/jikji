@@ -36,10 +36,26 @@ spring:
               - DELETE
               - OPTIONS
       routes:
-        - id: content-service
-          uri: lb://CONTENT-SERVICE
+        - id: content-command
+          uri: lb://CONTENT-COMMAND
           predicates:
-            - Path=/content-service/**
+            - Path=/content-command/**
             - Method=POST,PATCH,DELETE,OPTIONS
           filters:
-            - RewritePath=/content-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/content-command/(?<segment>.*), /$\{segment}
+
+        - id: content-query
+          uri: lb://CONTENT-QUERY
+          predicates:
+            - Path=/content-query/**
+            - Method=GET,OPTIONS
+          filters:
+            - RewritePath=/content-query/(?<segment>.*), /$\{segment}
+
+        - id: search-service
+          uri: lb://SEARCH-SERVICE
+          predicates:
+            - Path=/search-service/**
+            - Method=POST,DELETE,GET,OPTIONS
+          filters:
+            - RewritePath=/search-service/(?<segment>.*), /$\{segment}

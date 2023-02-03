@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: content-query-service
+    name: content-query
 
 eureka:
   instance:
