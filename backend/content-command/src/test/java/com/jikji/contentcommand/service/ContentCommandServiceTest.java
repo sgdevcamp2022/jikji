@@ -8,19 +8,24 @@ import com.jikji.contentcommand.domain.ImageUrl;
 import com.jikji.contentcommand.dto.request.ContentCreateRequest;
 import com.jikji.contentcommand.dto.request.ContentUpdateRequest;
 import com.jikji.contentcommand.repository.ContentCommandRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class ContentCommandServiceTest {
 
     @Autowired
     private ContentCommandService contentCommandService;
     @Autowired
     private ContentCommandRepository contentCommandRepository;
+
 
     @DisplayName("새로운 게시글을 생성한다")
     @Test
@@ -33,9 +38,14 @@ class ContentCommandServiceTest {
         String url = "http://test.jikji/asd12sdf452";
         int order = 1;
         List<ImageUrl> imageUrl = List.of(new ImageUrl(url, order, userId));
+        List<Long> hashtags = Arrays.asList(1L, 2L, 3L, 4L);
 
-        ContentCreateRequest contentCreateRequest = new ContentCreateRequest(userId, text,
-                visibleComments, visibleLikes, imageUrl);
+        ContentCreateRequest contentCreateRequest = new ContentCreateRequest(
+                userId, text,
+                visibleComments,
+                visibleLikes,
+                imageUrl,
+                hashtags);
 
         // when
         Long savedId = contentCommandService.save(contentCreateRequest);
@@ -48,31 +58,37 @@ class ContentCommandServiceTest {
     @Test
     void 게시글을_수정한다() {
         // given
+        final Long contentId = 1L;
         Content content = Content.builder()
-                .id(1L)
+                .id(contentId)
                 .likes(0)
-                .text("변경전 텍스트")
+                .text("변경전 텍스트 #aaa #bb #ccc #dde")
                 .imageUrl(List.of(new ImageUrl("http://test.jikji/before-image", 1, 1L)))
                 .userId(1L)
                 .visibleComments(false)
                 .visibleLikes(false)
+                .hashtags(Arrays.asList(1L, 2L, 3L, 4L))
                 .build();
+        contentCommandRepository.save(content);
 
         ContentUpdateRequest request = ContentUpdateRequest.builder()
-                .text("변경된 텍스트")
+                .text("변경된 텍스트 #aaa")
                 .userId(1L)
                 .imageUrl(List.of(new ImageUrl("http://test.jikji/changed-image-url", 1, 1L)))
                 .visibleComments(true)
                 .visibleLikes(true)
+                .hashtags(List.of(1L))
                 .build();
         // when
-        content.update(request);
+        contentCommandService.update(contentId, request);
+        content = contentCommandRepository.findById(contentId).orElseThrow();
 
         // then
         assertThat(content.getText()).isEqualTo(request.getText());
         assertThat(content.getImageUrl()).isEqualTo(request.getImageUrl());
         assertThat(content.getVisibleComments()).isEqualTo(request.getVisibleComments());
         assertThat(content.getVisibleLikes()).isEqualTo(request.getVisibleLikes());
+        assertThat(content.getHashtags()).isEqualTo(request.getHashtags());
     }
 
     @DisplayName("게시글을 삭제한다")
@@ -88,8 +104,10 @@ class ContentCommandServiceTest {
                 .userId(1L)
                 .visibleComments(false)
                 .visibleLikes(false)
+                .hashtags(new ArrayList<>())
                 .build();
         contentCommandRepository.save(content);
+
         // when, then
         assertDoesNotThrow(() -> contentCommandService.delete(contentId));
     }
@@ -107,6 +125,7 @@ class ContentCommandServiceTest {
                 .imageUrl(List.of(new ImageUrl("http://test.jikji/image", 1, 1L)))
                 .userId(1L)
                 .visibleComments(visibleComments)
+                .hashtags(new ArrayList<>())
                 .build();
         contentCommandRepository.save(content);
 
@@ -130,6 +149,7 @@ class ContentCommandServiceTest {
                 .imageUrl(List.of(new ImageUrl("http://test.jikji/image", 1, 1L)))
                 .userId(1L)
                 .visibleLikes(visibleLikes)
+                .hashtags(new ArrayList<>())
                 .build();
         contentCommandRepository.save(content);
 
