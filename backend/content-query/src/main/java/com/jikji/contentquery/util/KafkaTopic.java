@@ -14,4 +14,6 @@ public final class KafkaTopic {
 
     public static final String ADD_CONTENT_LIKE = "like-add";
     public static final String DELETE_CONTENT_LIKE = "like-delete";
+
+    public static final String UPDATE_HASHTAG = "hashtag-update";
 }
