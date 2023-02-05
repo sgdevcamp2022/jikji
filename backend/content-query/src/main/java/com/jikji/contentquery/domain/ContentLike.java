@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Document("content_likes")
 @Getter
@@ -13,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ContentLike {
 
     @Id
+    @Field(value = "_id", targetType = FieldType.OBJECT_ID)
     private String id;
 
     private Long contentLikeId;
