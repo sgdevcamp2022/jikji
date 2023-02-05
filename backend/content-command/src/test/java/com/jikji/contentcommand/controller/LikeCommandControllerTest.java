@@ -1,17 +1,16 @@
 package com.jikji.contentcommand.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.jikji.contentcommand.domain.Content;
 import com.jikji.contentcommand.domain.ContentLike;
 import com.jikji.contentcommand.domain.ImageUrl;
-import com.jikji.contentcommand.dto.request.ContentCreateRequest;
 import com.jikji.contentcommand.repository.ContentCommandRepository;
 import com.jikji.contentcommand.repository.LikeCommandRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,6 +47,7 @@ class LikeCommandControllerTest {
                 .userId(1L)
                 .visibleComments(false)
                 .visibleLikes(true)
+                .hashtags(new ArrayList<>())
                 .build();
 
         contentCommandRepository.save(content);

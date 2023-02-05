@@ -10,6 +10,7 @@ import com.jikji.contentcommand.repository.ContentCommandRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +47,8 @@ class BookmarkCommandControllerTest {
         Content content = Content.builder()
                 .id(contentId)
                 .likes(0)
-                .text("변경전 텍스트")
+                .text("변경전 텍스트 #aaa #bb #ccc #dde")
+                .hashtags(Arrays.asList(1L, 2L, 3L, 4L))
                 .imageUrl(List.of(new ImageUrl("http://test.jikji/before-image", 1, 1L)))
                 .userId(userId)
                 .visibleComments(false)
