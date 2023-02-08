@@ -16,7 +16,6 @@ import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.repos
 public class NotificationService {
 
 	EmitterRepository emitterRepository;
-	//임시
 	NotificationRepository notificationRepository;
 
 	public NotificationService(EmitterRepository emitterRepository, NotificationRepository notificationRepository) {
@@ -44,7 +43,6 @@ public class NotificationService {
 		emitterRepository.save(id, emitter);
 	}
 
-	//임시
 	public void saveDb(Notification notification) {
 		notificationRepository.save(notification);
 	}

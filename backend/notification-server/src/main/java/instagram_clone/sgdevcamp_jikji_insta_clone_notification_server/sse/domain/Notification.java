@@ -4,15 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
@@ -25,9 +20,9 @@ public class Notification {
 	@GeneratedValue
 	private Long id;
 
-	private String name;
+	private String content;
 
 	public Notification(String name){
-		this.name = name;
+		this.content = name;
 	}
 }

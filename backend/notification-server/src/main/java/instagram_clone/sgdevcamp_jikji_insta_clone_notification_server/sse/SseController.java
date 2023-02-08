@@ -47,7 +47,7 @@ public class SseController {
 		}
 
 		notificationService.save(id,emitter);
-		notificationService.saveDb(new Notification(id));
+		notificationService.saveDb(new Notification(id)); //입력 테스트용 임시 코드
 
 		emitter.onCompletion(() -> sseEmitters.remove(token));
 		emitter.onTimeout(() -> sseEmitters.remove(token));
@@ -57,6 +57,7 @@ public class SseController {
 	}
 
 
+	//내일 작성 예정
 	@PostMapping("/add")
 	public ResponseEntity<?> add() {
 
