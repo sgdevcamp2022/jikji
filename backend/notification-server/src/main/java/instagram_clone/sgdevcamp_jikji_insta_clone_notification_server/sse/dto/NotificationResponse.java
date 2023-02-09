@@ -33,7 +33,7 @@ public class NotificationResponse {
 			.id(notification.getId())
 			.content(notification.getContent())
 			.url(notification.getUrl())
-			.createdAt(notification.getCreateAt())
+			.createdAt(notification.getCreatedAt())
 			.read(notification.isRead())
 			.build();
 	}

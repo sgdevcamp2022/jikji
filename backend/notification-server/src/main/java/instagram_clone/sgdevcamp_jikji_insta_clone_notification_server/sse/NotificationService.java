@@ -3,12 +3,17 @@ package instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse;
 //import static instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.SseController.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.domain.Notification;
+import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.dto.NotificationResponse;
 import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.repository.EmitterRepository;
 import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.repository.NotificationRepository;
 
@@ -60,11 +65,38 @@ public class NotificationService {
 		sseEmitters.forEach(
 			(key, emitter) -> {
 				emitterRepository.saveEventCache(userId, emitter);
-				sendToClient(emitter, key, NotificationResponse.from(notification));
+
+				// 임시로 주석 처리
+				// sendToClient(emitter, key, NotificationResponse.from(notification));
 			}
 		);
 	}
-	public void saveDb(Notification notification) {
+
+
+	public Notification findById(Long id){
+		Notification notification = notificationRepository.findById(id).get();
+		return notification;
+	}
+
+	public List<Notification> findByUserId(Long userId) {
+		Collection<Notification> notifications = notificationRepository.findByUserId(userId);
+		return new ArrayList<>(notifications);
+	}
+
+	public Long save(Notification notification) {
+		notificationRepository.save(notification);
+		return notification.getId();
+	}
+
+	public void delete(Notification notification){
+		notificationRepository.delete(notification);
+	}
+
+	//알림 읽음처리 부분
+	//더 나은 방법이 있을 것 같음. 질문하기
+	public void readNotification(Long id) {
+		Notification notification = notificationRepository.findById(id).get();
+		notification.readNotification();
 		notificationRepository.save(notification);
 	}
 
