@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,19 +23,19 @@ public class Notification {
 	private String content;
 	private String url;
 	private LocalDateTime createdAt;
-	private boolean read;
+	private boolean isRead;
 
 	@Builder
-	public Notification(Long id, Long userId, String content, String url, LocalDateTime createdAt, boolean read) {
+	public Notification(Long id, Long userId, String content, String url, LocalDateTime createdAt, boolean isRead) {
 		this.id = id;
 		this.userId = userId;
 		this.content = content;
 		this.url = url;
 		this.createdAt = createdAt;
-		this.read = read;
+		this.isRead = isRead;
 	}
 
 	public void readNotification(){
-		this.read=true;
+		this.isRead =true;
 	}
 }

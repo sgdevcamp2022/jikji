@@ -1,6 +1,5 @@
 package instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.domain.Notification;
@@ -17,7 +16,7 @@ public class NotificationResponse {
 	private String content;
 	private String url;
 	private Integer[] createdAt;
-	private boolean read;
+	private boolean isRead;
 
 	@Builder
 	public NotificationResponse(Long id, String content, String url, LocalDateTime createdAt, boolean read) {
@@ -25,7 +24,7 @@ public class NotificationResponse {
 		this.content = content;
 		this.url = url;
 		this.createdAt = LocalDateTimeToArray.convert(createdAt);
-		this.read = read;
+		this.isRead = read;
 	}
 
 	public static NotificationResponse from(Notification notification) {

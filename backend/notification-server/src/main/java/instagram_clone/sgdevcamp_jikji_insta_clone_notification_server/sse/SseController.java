@@ -59,7 +59,8 @@ public class SseController {
 			.collect(Collectors.toList());
 	}
 
-	@GetMapping("")
+
+	@GetMapping("/find")
 	public NotificationResponse findById(@RequestParam Long notificationId) {
 		return NotificationResponse.from(notificationService.findById(notificationId));
 	}

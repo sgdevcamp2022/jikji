@@ -1,14 +1,11 @@
 package instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.dto;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.domain.Notification;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,7 +35,7 @@ public class NotificationDto {
 			.content(content)
 			.url(url)
 			.createdAt(LocalDateTime.now())
-			.read(false)
+			.isRead(false)
 			.build();
 	}
 
