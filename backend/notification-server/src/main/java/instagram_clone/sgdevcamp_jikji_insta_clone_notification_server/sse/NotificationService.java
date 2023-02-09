@@ -14,7 +14,7 @@ import instagram_clone.sgdevcamp_jikji_insta_clone_notification_server.sse.repos
 
 @Service
 public class NotificationService {
-
+	private static final Long DEFAULT_SSE_TIMEOUT = 1000 * 60 * 60 * 12L;
 	EmitterRepository emitterRepository;
 	NotificationRepository notificationRepository;
 
@@ -23,32 +23,50 @@ public class NotificationService {
 		this.notificationRepository = notificationRepository;
 	}
 
+	public SseEmitter subscribe(String token, String lastEventId) {
+		String id = token + "_" + System.currentTimeMillis();
+		SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_SSE_TIMEOUT));
 
-	/* sseEmitter 인식을 못해서 오류가 나서 주석처리
-	public void noticeAllMember(String email) {
-		if (sseEmitters.containsKey(email)) {
-			SseEmitter emitter = sseEmitters.get(email);
-			try {
-				System.out.println("emitter = " + emitter);
-				emitter.send(SseEmitter.event().name("add").data("알림 테스트입니다!"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		emitter.onCompletion(() -> emitterRepository.deleteById(id));
+		emitter.onTimeout(() -> emitterRepository.deleteById(id));
+		emitter.onError((e) -> emitterRepository.deleteById(id));
+
+		sendToClient(emitter, id, "Server-Sent-Event Created. [userId" + token + "]");
+
+		if (!lastEventId.isEmpty()) {
+			Map<String, SseEmitter> events = emitterRepository.findAllWithId(token);
+			events.entrySet().stream()
+				.filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
+				.forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
+		}
+
+		return emitter;
+	}
+
+	private void sendToClient(SseEmitter emitter, String id, Object data) {
+		try {
+			emitter.send(SseEmitter.event()
+				.id(id)
+				.name("sse")
+				.data(data));
+		} catch (IOException e) {
+			emitterRepository.deleteById(id);
+			throw new RuntimeException("Connection Error");
 		}
 	}
 
-	 */
-
-	public void save(String id, SseEmitter emitter) {
-		emitterRepository.save(id, emitter);
+	public void send(String userId, String content) {
+		Map<String, SseEmitter> sseEmitters = emitterRepository.findAllWithId(userId);
+		sseEmitters.forEach(
+			(key, emitter) -> {
+				emitterRepository.saveEventCache(userId, emitter);
+				sendToClient(emitter, key, NotificationResponse.from(notification));
+			}
+		);
 	}
-
 	public void saveDb(Notification notification) {
 		notificationRepository.save(notification);
 	}
 
 
-	public Map<String, SseEmitter> findAllWithId(String id) {
-		return emitterRepository.findAllWithId(id);
-	}
 }

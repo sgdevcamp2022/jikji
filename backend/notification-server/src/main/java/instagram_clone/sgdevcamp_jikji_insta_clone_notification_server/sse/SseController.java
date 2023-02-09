@@ -24,8 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/notification")
 public class SseController {
 
-	public static Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
-
 	private final NotificationService notificationService;
 
 	public SseController(NotificationService notificationService) {
@@ -37,30 +35,12 @@ public class SseController {
 	public SseEmitter subscribe(@RequestParam String token,
 		@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "")
 		String lastEventId) {
-		String id = token + "_" + System.currentTimeMillis();
-		System.out.println("email = " + token);
-		SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-		try {
-			emitter.send(SseEmitter.event().name("connect"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		notificationService.save(id,emitter);
-		notificationService.saveDb(new Notification(id)); //입력 테스트용 임시 코드
-
-		emitter.onCompletion(() -> sseEmitters.remove(token));
-		emitter.onTimeout(() -> sseEmitters.remove(token));
-		emitter.onError((e) -> sseEmitters.remove(token));
-
-		return emitter;
+		return notificationService.subscribe(token, lastEventId);
 	}
 
-
-	//내일 작성 예정
 	@PostMapping("/add")
-	public ResponseEntity<?> add() {
-
+	public ResponseEntity<?> send() {
 
 		return ResponseEntity.ok("ok");
 	}
