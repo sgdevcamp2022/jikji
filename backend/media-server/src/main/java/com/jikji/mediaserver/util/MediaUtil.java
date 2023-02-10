@@ -1,7 +1,7 @@
 package com.jikji.mediaserver.util;
 
-import com.example.mediaserver.exception.CustomException;
-import com.example.mediaserver.exception.ErrorCode;
+import com.jikji.mediaserver.exception.CustomException;
+import com.jikji.mediaserver.exception.ErrorCode;
 
 import lombok.extern.slf4j.Slf4j;
 

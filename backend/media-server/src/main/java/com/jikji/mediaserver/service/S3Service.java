@@ -12,9 +12,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.mediaserver.dto.MediaDto;
-import com.example.mediaserver.model.MediaType;
-import com.example.mediaserver.util.MediaUtil;
+import com.jikji.mediaserver.dto.MediaDto;
+import com.jikji.mediaserver.model.MediaType;
+import com.jikji.mediaserver.util.MediaUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
