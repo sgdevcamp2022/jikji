@@ -19,7 +19,7 @@ function Test() {
 
 
     const trigger =()=>{
-        axios.post("/add")
+        axios.post("http://localhost:8080/notification/add")
             .then(event=>{
                 console.log(event)
                 console.log(location.state)

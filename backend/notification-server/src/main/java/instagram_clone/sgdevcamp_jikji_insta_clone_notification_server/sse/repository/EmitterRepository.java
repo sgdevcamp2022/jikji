@@ -37,4 +37,24 @@ public class EmitterRepository {
 			entry -> entry.getKey().startsWith(id)
 		).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
+
+	public void saveEventCache(String id, Object event) {
+		eventCache.put(id, event);
+	}
+
+	public Map<String, Object> findAllEventCacheWithId(String id) {
+		return eventCache.entrySet().stream()
+			.filter(entry -> entry.getKey().startsWith(id))
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	public void deleteAllEventCacheWithId(String id) {
+		eventCache.forEach(
+			(key, data) -> {
+				if (key.startsWith(id)) {
+					eventCache.remove(key);
+				}
+			}
+		);
+	}
 }
