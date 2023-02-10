@@ -19,8 +19,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.example.mediaserver.model.User;
-import com.example.mediaserver.repository.UserRepository;
+import com.jikji.mediaserver.model.User;
+import com.jikji.mediaserver.repository.UserRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
