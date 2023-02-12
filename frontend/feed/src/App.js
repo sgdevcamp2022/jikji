@@ -1,6 +1,7 @@
+import axios from "axios";
 import { memo, useCallback, useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Item from "./Item";
+import ItemBox from "./ItemBox";
 import Loader from "./Loader";
 
 const GlobalStyle = createGlobalStyle`
@@ -37,7 +38,7 @@ const AppWrap = styled.div`
 const App = () => {
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [itemLists, setItemLists] = useState([1]);
+  const [itemLists, setItemLists] = useState([]);
 
   useEffect(() => {
     console.log(itemLists);
@@ -46,8 +47,13 @@ const App = () => {
   const getMoreItem = async () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    let Items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    setItemLists((itemLists) => itemLists.concat(Items));
+
+    axios.get("http://localhost:8080/10files").then((response) => {
+      console.log(response.data);
+      setItemLists((itemLists) => itemLists.concat(response.data));
+      console.log("itemlist~");
+      console.log(itemLists);
+    });
     setIsLoaded(false);
   };
 
@@ -68,14 +74,24 @@ const App = () => {
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target  ]);
+  }, [target]);
 
   return (
     <>
       <GlobalStyle />
       <AppWrap>
         {itemLists.map((v, i) => {
-          return <Item number={i + 1} key={i} />;
+          return (
+            <ItemBox
+              item={itemLists[i]}
+              photo={itemLists[i].imageUrl}
+              userId={itemLists[i].username}
+              title={itemLists[i].nftName}
+              likes={itemLists[i].likes}
+              commentNum={itemLists[i].price}
+              key={i}
+            />
+          );
         })}
         <div ref={setTarget} className="Target-Element">
           {isLoaded && <Loader />}
