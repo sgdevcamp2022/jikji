@@ -84,11 +84,6 @@ const App = () => {
           return (
             <ItemBox
               item={itemLists[i]}
-              photo={itemLists[i].imageUrl}
-              userId={itemLists[i].username}
-              title={itemLists[i].nftName}
-              likes={itemLists[i].likes}
-              commentNum={itemLists[i].price}
               key={i}
             />
           );
