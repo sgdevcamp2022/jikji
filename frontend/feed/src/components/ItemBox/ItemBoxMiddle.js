@@ -12,7 +12,7 @@ const ItemBoxMiddle = (props) => {
     <FontAwesomeIcon icon="paper-plane" className="icon" />
     <FontAwesomeIcon icon="bookmark" className="icon right" />
       <div>
-        <span class="item-heart"> user님 외 {props.likes}명이 좋아합니다</span>
+        <span class="item-heart"> you님 외 {props.likes}명이 좋아합니다</span>
       </div>
     </div>
   );
