@@ -7,7 +7,7 @@ const ItemBoxTop = (props) => {
 
   return (
     <div className="itemboxtop">
-      <p class="artist">{props.userId}</p>
+      <p className="artist">{props.userId}</p>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import ItemBox from "./ItemBox";
 import Loader from "./Loader";
+import FeedMiddle from "./FeedMiddle.js";
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -16,31 +17,15 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const AppWrap = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-
-  .Target-Element {
-    width: 100vw;
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-  }
-`;
 
 const App = () => {
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [itemLists, setItemLists] = useState([]);
+  let index = Number.MAX_SAFE_INTEGER;
 
   useEffect(() => {
+    console.log("itemLists");
     console.log(itemLists);
   }, [itemLists]);
 
@@ -48,19 +33,31 @@ const App = () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    axios.get("http://localhost:8080/10files").then((response) => {
-      console.log(response.data);
-      setItemLists((itemLists) => itemLists.concat(response.data));
-      console.log("itemlist~");
-      console.log(itemLists);
+    const url =
+      "http://localhost:8080/slicing?id=" + index.toString() + "&size=10";
+
+    axios.get(url).then((response) => {
+      console.log(
+        "new " + response.data.numberOfElements.toString() + " items"
+      );
+      // console.log("index : " + index);
+      // console.log("hasNext : " + response.data.hasNext.toString());
+      // console.log("first index : " + response.data.data[0].id);
+      // console.log("last index : " + response.data.data[response.data.data.length - 1].id);
+      console.log(response.data.data);
+      setItemLists((itemLists) => itemLists.concat(response.data.data));
+      if (response.data.hasNext === true) {
+        index = response.data.data[response.data.data.length - 1].id;
+      } else index = -1;
     });
+
     setIsLoaded(false);
   };
 
   const onIntersect = async ([entry], observer) => {
-    if (entry.isIntersecting && !isLoaded) {
+    if (entry.isIntersecting && !isLoaded && index >= 0) {
       observer.unobserve(entry.target);
-      await getMoreItem();
+      await getMoreItem(index);
       observer.observe(entry.target);
     }
   };
@@ -79,19 +76,7 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <AppWrap>
-        {itemLists.map((v, i) => {
-          return (
-            <ItemBox
-              item={itemLists[i]}
-              key={i}
-            />
-          );
-        })}
-        <div ref={setTarget} className="Target-Element">
-          {isLoaded && <Loader />}
-        </div>
-      </AppWrap>
+      <FeedMiddle></FeedMiddle>
     </>
   );
 };

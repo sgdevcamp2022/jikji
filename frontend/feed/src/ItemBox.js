@@ -26,7 +26,7 @@ const ItemBox = (props) => {
     <ItemWrap>
       <ItemBoxTop userId={props.item.username} />
 
-      <img src={props.item.imageUrl} class="photo" alt="" />
+      <img src={props.item.imageUrl} className="photo" alt="" />
       <div>
         <ItemBoxMiddle likes={props.item.likes} commentNum={props.commentNum} />
         <ItemBoxBottom commentNum={props.item.price} />
