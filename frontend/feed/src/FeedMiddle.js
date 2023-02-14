@@ -46,27 +46,277 @@ const FeedMiddle = () => {
     console.log(itemLists);
   }, [itemLists]);
 
+  // api로 받아와서 실행시키는 버전
+  // const getMoreItem = async () => {
+  //   setIsLoaded(true);
+  //   await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  //   const url =
+  //     "http://localhost:8080/slicing?id=" + index.toString() + "&size=10";
+
+  //   axios.get(url).then((response) => {
+  //     console.log(
+  //       "new " + response.data.numberOfElements.toString() + " items"
+  //     );
+  //     // console.log("index : " + index);
+  //     // console.log("hasNext : " + response.data.hasNext.toString());
+  //     // console.log("first index : " + response.data.data[0].id);
+  //     // console.log("last index : " + response.data.data[response.data.data.length - 1].id);
+  //     console.log(response.data.data);
+  //     setItemLists((itemLists) => itemLists.concat(response.data.data));
+  //     if (response.data.hasNext === true) {
+  //       index = response.data.data[response.data.data.length - 1].id;
+  //     } else index = -1;
+  //   });
+
+  //   setIsLoaded(false);
+  // };
+
+  // 임시로 response 객체 생성해서 테스트
   const getMoreItem = async () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    const url =
-      "http://localhost:8080/slicing?id=" + index.toString() + "&size=10";
+    // 임시 테스트 위해 객체 생성, 여기서 responseData는 위의 response.data와 같음
+    const json = `{
+      "numberOfElements": 10,
+      "hasNext": true,
+      "data": [
+        {
+          "id": "63ea653d4cfc8024dd542332",
+          "contentId": 1,
+          "userId": 1,
+          "text": "텍스트 본문 내용 #aaa #aab",
+          "likes": 1234,
+          "imageUrl": [
+              {
+                  "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+                  "order": 1,
+                  "user_id": 1
+              }
+          ],
+          "hashtags": [
+              1,
+              2
+          ],
+          "visibleLikes": null,
+          "visibleComments": null,
+          "createdAt": "2023-01-01",
+          "modifiedAt": "2023-01-01"
+      },
+      {
+        "id": "63ea653d4cfc8024dd542332",
+        "contentId": 1,
+        "userId": 1,
+        "text": "텍스트 본문 내용 #aaa #aab",
+        "likes": 1234,
+        "imageUrl": [
+            {
+                "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+                "order": 1,
+                "user_id": 1
+            }
+        ],
+        "hashtags": [
+            1,
+            2
+        ],
+        "visibleLikes": null,
+        "visibleComments": null,
+        "createdAt": "2023-01-01",
+        "modifiedAt": "2023-01-01"
+    },
+    {
+      "id": "63ea653d4cfc8024dd542332",
+      "contentId": 1,
+      "userId": 1,
+      "text": "텍스트 본문 내용 #aaa #aab",
+      "likes": 1234,
+      "imageUrl": [
+          {
+              "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+              "order": 1,
+              "user_id": 1
+          }
+      ],
+      "hashtags": [
+          1,
+          2
+      ],
+      "visibleLikes": null,
+      "visibleComments": null,
+      "createdAt": "2023-01-01",
+      "modifiedAt": "2023-01-01"
+  },
+  {
+    "id": "63ea653d4cfc8024dd542332",
+    "contentId": 1,
+    "userId": 1,
+    "text": "텍스트 본문 내용 #aaa #aab",
+    "likes": 1234,
+    "imageUrl": [
+        {
+            "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+            "order": 1,
+            "user_id": 1
+        }
+    ],
+    "hashtags": [
+        1,
+        2
+    ],
+    "visibleLikes": null,
+    "visibleComments": null,
+    "createdAt": "2023-01-01",
+    "modifiedAt": "2023-01-01"
+},
+{
+  "id": "63ea653d4cfc8024dd542332",
+  "contentId": 1,
+  "userId": 1,
+  "text": "텍스트 본문 내용 #aaa #aab",
+  "likes": 1234,
+  "imageUrl": [
+      {
+          "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+          "order": 1,
+          "user_id": 1
+      }
+  ],
+  "hashtags": [
+      1,
+      2
+  ],
+  "visibleLikes": null,
+  "visibleComments": null,
+  "createdAt": "2023-01-01",
+  "modifiedAt": "2023-01-01"
+},
+{
+  "id": "63ea653d4cfc8024dd542332",
+  "contentId": 1,
+  "userId": 1,
+  "text": "텍스트 본문 내용 #aaa #aab",
+  "likes": 1234,
+  "imageUrl": [
+      {
+          "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+          "order": 1,
+          "user_id": 1
+      }
+  ],
+  "hashtags": [
+      1,
+      2
+  ],
+  "visibleLikes": null,
+  "visibleComments": null,
+  "createdAt": "2023-01-01",
+  "modifiedAt": "2023-01-01"
+},
+{
+  "id": "63ea653d4cfc8024dd542332",
+  "contentId": 1,
+  "userId": 1,
+  "text": "텍스트 본문 내용 #aaa #aab",
+  "likes": 1234,
+  "imageUrl": [
+      {
+          "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+          "order": 1,
+          "user_id": 1
+      }
+  ],
+  "hashtags": [
+      1,
+      2
+  ],
+  "visibleLikes": null,
+  "visibleComments": null,
+  "createdAt": "2023-01-01",
+  "modifiedAt": "2023-01-01"
+},
+{
+  "id": "63ea653d4cfc8024dd542332",
+  "contentId": 1,
+  "userId": 1,
+  "text": "텍스트 본문 내용 #aaa #aab",
+  "likes": 1234,
+  "imageUrl": [
+      {
+          "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+          "order": 1,
+          "user_id": 1
+      }
+  ],
+  "hashtags": [
+      1,
+      2
+  ],
+  "visibleLikes": null,
+  "visibleComments": null,
+  "createdAt": "2023-01-01",
+  "modifiedAt": "2023-01-01"
+},
+{
+  "id": "63ea653d4cfc8024dd542332",
+  "contentId": 1,
+  "userId": 1,
+  "text": "텍스트 본문 내용 #aaa #aab",
+  "likes": 1234,
+  "imageUrl": [
+      {
+          "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+          "order": 1,
+          "user_id": 1
+      }
+  ],
+  "hashtags": [
+      1,
+      2
+  ],
+  "visibleLikes": null,
+  "visibleComments": null,
+  "createdAt": "2023-01-01",
+  "modifiedAt": "2023-01-01"
+},
+{
+  "id": "63ea653d4cfc8024dd542332",
+  "contentId": 1,
+  "userId": 1,
+  "text": "텍스트 본문 내용 #aaa #aab",
+  "likes": 1234,
+  "imageUrl": [
+      {
+          "url": "https://img.youtube.com/vi/N7iIvIV-ZCs/maxresdefault.jpg",
+          "order": 1,
+          "user_id": 1
+      }
+  ],
+  "hashtags": [
+      1,
+      2
+  ],
+  "visibleLikes": null,
+  "visibleComments": null,
+  "createdAt": "2023-01-01",
+  "modifiedAt": "2023-01-01"
+}
+      ]
+  }`;
+    const responseData = JSON.parse(json);
+    console.log(responseData);
 
-    axios.get(url).then((response) => {
-      console.log(
-        "new " + response.data.numberOfElements.toString() + " items"
-      );
-      // console.log("index : " + index);
-      // console.log("hasNext : " + response.data.hasNext.toString());
-      // console.log("first index : " + response.data.data[0].id);
-      // console.log("last index : " + response.data.data[response.data.data.length - 1].id);
-      console.log(response.data.data);
-      setItemLists((itemLists) => itemLists.concat(response.data.data));
-      if (response.data.hasNext === true) {
-        index = response.data.data[response.data.data.length - 1].id;
-      } else index = -1;
-    });
+    console.log("new " + responseData.numberOfElements.toString() + " items");
+    // console.log("index : " + index);
+    // console.log("hasNext : " + response.data.hasNext.toString());
+    // console.log("first index : " + response.data.data[0].id);
+    // console.log("last index : " + response.data.data[response.data.data.length - 1].id);
+    console.log(responseData.data);
+    setItemLists((itemLists) => itemLists.concat(responseData.data));
+    if (responseData.hasNext === true) {
+      index = responseData.data[responseData.data.length - 1].id;
+    } else index = -1;
 
     setIsLoaded(false);
   };

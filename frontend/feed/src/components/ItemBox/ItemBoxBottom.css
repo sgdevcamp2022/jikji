@@ -1,5 +1,14 @@
 .itemboxbottom{
     width: 100%;
-    height: 70px;
+    height: 50px;
     background-color: thistle;
+}
+
+.itemboxbottom-toComment{
+    margin-bottom: 5px;
+}
+
+.itemboxbottom-input{
+    border: 0px;
+    margin-right: 10px;
 }

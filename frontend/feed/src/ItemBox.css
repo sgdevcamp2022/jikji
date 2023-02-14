@@ -10,7 +10,11 @@
     text-align: left;
     text-decoration: none;
     display: inline-block;
-  }
+}
+
+ .itembox-bold{
+    font-weight: 500;
+}
 
 .photo{
     width: 100%;

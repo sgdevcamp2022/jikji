@@ -8,8 +8,7 @@ import ItemBoxMiddle from "./components/ItemBox/ItemBoxMiddle.js";
 import ItemBoxBottom from "./components/ItemBox/ItemBoxBottom.js";
 
 const ItemWrap = styled.div`
-  padding: 20px 0px 20px 0px;
-  width: 470px;
+  width: 350px;
   height: auto;
   color: black;
   background-color: white;
@@ -24,12 +23,16 @@ const ItemBox = (props) => {
 
   return (
     <ItemWrap>
-      <ItemBoxTop userId={props.item.username} />
+      <ItemBoxTop id={props.item.id} createdAt={props.item.createdAt} />
 
-      <img src={props.item.imageUrl} className="photo" alt="" />
+      <img src={props.item.imageUrl[0].url} className="photo" alt="" />
       <div>
-        <ItemBoxMiddle likes={props.item.likes} commentNum={props.commentNum} />
-        <ItemBoxBottom commentNum={props.item.price} />
+        <ItemBoxMiddle
+          likes={props.item.likes}
+          id={props.item.id}
+          text={props.item.text}
+        />
+        <ItemBoxBottom />
       </div>
     </ItemWrap>
   );

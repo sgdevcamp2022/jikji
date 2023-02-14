@@ -17,7 +17,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
 const App = () => {
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -42,8 +41,10 @@ const App = () => {
       );
       // console.log("index : " + index);
       // console.log("hasNext : " + response.data.hasNext.toString());
-      // console.log("first index : " + response.data.data[0].id);
-      // console.log("last index : " + response.data.data[response.data.data.length - 1].id);
+      console.log("first index : " + response.data.data[0].id);
+      console.log(
+        "last index : " + response.data.data[response.data.data.length - 1].id
+      );
       console.log(response.data.data);
       setItemLists((itemLists) => itemLists.concat(response.data.data));
       if (response.data.hasNext === true) {

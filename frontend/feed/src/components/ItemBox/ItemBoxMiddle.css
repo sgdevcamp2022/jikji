@@ -3,10 +3,27 @@
     height: 70px;
     background-color: antiquewhite;
 }
-.icon{
-    margin:10px 20px 10px 0px;
+.itemboxmiddle-icon{
+    margin:10px 20px 0px 0px;
+    width: 15px;
+    height: 15px;
 }
-.right{
-    margin:10px 0px 10px 0px;
+.itemboxmiddle-icon-right{
+    margin:10px 10px 0px 0px;
     float:right;
+    width: 15px;
+    height: 15px;
+}
+
+.itemboxmiddle-likemessage{
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.itemboxmiddle-bold{
+    font-weight: 500;
+}
+
+.itemboxmiddle-text{
+    margin-left: 10px;
 }

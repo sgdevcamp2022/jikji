@@ -1,5 +1,29 @@
 .itemboxtop{
     width: 100%;
-    height: 50px;
-    background-color: darkgrey;
+    height: 47px;
+    padding: 13px 10px 7px 5px;
+    background-color: lightblue;
+    display:flex;
+}
+
+.itemboxtop-profileImg{
+    width: 27px;
+    height: 27px;
+    border-radius: 100%;
+    display:grid;
+    align-items:center;
+}
+
+
+.itemboxtop-id{
+    margin-left: 10px;
+    display:grid;
+    align-items:center;
+
+}
+
+.createdAt{
+    margin-left: 10px;
+    display:grid;
+    align-items:center;
 }

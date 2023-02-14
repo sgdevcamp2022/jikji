@@ -7,12 +7,19 @@ const ItemBoxMiddle = (props) => {
 
   return (
     <div className="itemboxmiddle">
-    <FontAwesomeIcon icon="heart" className="icon" />
-    <FontAwesomeIcon icon="comment" className="icon" />
-    <FontAwesomeIcon icon="paper-plane" className="icon" />
-    <FontAwesomeIcon icon="bookmark" className="icon right" />
+    <FontAwesomeIcon icon="heart" className="itemboxmiddle-icon" />
+    <FontAwesomeIcon icon="comment" className="itemboxmiddle-icon" />
+    <FontAwesomeIcon icon="paper-plane" className="itemboxmiddle-icon" />
+    <FontAwesomeIcon icon="bookmark" className="itemboxmiddle-icon-right" />
       <div>
-        <span className="item-heart"> user님 외 {props.likes}명이 좋아합니다</span>
+        <div className="itemboxmiddle-likemessage">
+          <span className="itembox-bold">user-example</span>
+          <span>님 </span>
+          <span className="itembox-bold">외 {props.likes}명</span>
+          <span>이 좋아합니다</span>
+        </div>
+        <span className="itembox-bold">{props.id}</span>
+        <span className="itemboxmiddle-text">{props.text}</span>
       </div>
     </div>
   );

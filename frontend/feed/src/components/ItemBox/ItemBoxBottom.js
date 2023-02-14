@@ -7,7 +7,15 @@ const ItemBoxBottom = (props) => {
 
   return (
     <div className="itemboxbottom">
-      <span>댓글 {props.commentNum}개 보기</span>
+      <div className="itemboxbottom-toComment">댓글 n개 모두 보기</div>
+      <form>
+        <input
+          type="text"
+          placeholder="댓글 달기..."
+          className="itemboxbottom-input"
+        ></input>
+        <input type="submit" value="게시"></input>
+      </form>
     </div>
   );
 };

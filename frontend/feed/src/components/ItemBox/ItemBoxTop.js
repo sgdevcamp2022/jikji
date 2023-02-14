@@ -7,7 +7,9 @@ const ItemBoxTop = (props) => {
 
   return (
     <div className="itemboxtop">
-      <p className="artist">{props.userId}</p>
+      <img className="itemboxtop-profileImg" src="https://img.youtube.com/vi/N7iIvIV-ZCs/mqdefault.jpg"></img>
+        <span className="itembox-bold itemboxtop-id">{props.id}</span>
+        <span className="createdAt">{props.createdAt}</span>
     </div>
   );
 };
