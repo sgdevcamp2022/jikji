@@ -156,8 +156,8 @@ public class UserController {
 
 	@Operation(summary = "유저 PK 요청", description = "유저 email로 유저 PK 정보 요청 API")
 	@ApiResponse(code = 200, message = "OK")
-	@PostMapping("/get-user-pk-email")
-	public ResponseEntity<?> getUserPk(@RequestBody @ApiParam(value = "유저 email") String email) {
+	@GetMapping("/{email}")
+	public ResponseEntity<?> getUserPk(@PathVariable("email") @ApiParam(value = "유저 email") String email) {
 		User user = userService.findByEmail(email);
 		if (user == null) {
 			return new ResponseEntity<>("NoSearchUser", HttpStatus.OK);
