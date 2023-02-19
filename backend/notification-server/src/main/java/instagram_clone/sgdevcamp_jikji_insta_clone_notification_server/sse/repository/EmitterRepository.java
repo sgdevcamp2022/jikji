@@ -38,6 +38,7 @@ public class EmitterRepository {
 		).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
+
 	public void saveEventCache(String id, Object event) {
 		eventCache.put(id, event);
 	}
