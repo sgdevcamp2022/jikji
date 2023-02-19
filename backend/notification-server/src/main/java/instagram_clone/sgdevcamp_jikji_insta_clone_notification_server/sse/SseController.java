@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import org.springframework.util.MultiValueMap;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,14 @@ public class SseController {
 		String sender = body.get("sender").get(0);
 		String receiver = body.get("receiver").get(0);
 		String content = body.get("content").get(0);
+		return ResponseEntity.ok("ok");
+	}
+
+	@PostMapping("/add")
+	public ResponseEntity<?> send(@RequestBody NotificationDto notificationDto) {
+
+		notificationService.save(notificationDto.toEntity());
+
 		return ResponseEntity.ok("ok");
 	}
 

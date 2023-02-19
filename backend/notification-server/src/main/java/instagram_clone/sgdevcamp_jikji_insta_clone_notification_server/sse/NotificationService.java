@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class NotificationService {
 	}
 
 	public void send(String userId, String content, String type) {
-		Notification notification;
+		Notification notification = new Notification();
 		if (Objects.equals(type, "chat")) {
 			//type 구분
 		} else if (Objects.equals(type, "comment")) {
